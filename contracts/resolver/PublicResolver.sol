@@ -1,25 +1,16 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.0;
 
-import "../registry/BNSRegistryMockup.sol";
+import "../registry/BNSRegistry.sol";
 
 contract PublicResolver {
-    BNSRegistryMockup public bns;
+    BNSRegistry public bns;
 
     mapping(bytes32 => address) public addresses;
     mapping(bytes32 => string) public names;
 
     constructor(address bnsAddr) {
-        bns = BNSRegistryMockup(bnsAddr);
-    }
-
-    modifier authorised(bytes32 node) {
-        require(
-            bns.owner(node) == msg.sender ||
-                bns.isApprovedForAll(bns.owner(node), msg.sender),
-            "Not authorized"
-        );
-        _;
+        bns = BNSRegistry(bnsAddr);
     }
 
     function setName(
@@ -42,5 +33,14 @@ contract PublicResolver {
 
     function addr(bytes32 node) external view returns (address) {
         return addresses[node];
+    }
+
+    modifier authorised(bytes32 node) {
+        require(
+            bns.owner(node) == msg.sender ||
+                bns.isApprovedForAll(bns.owner(node), msg.sender),
+            "Not authorized"
+        );
+        _;
     }
 }
