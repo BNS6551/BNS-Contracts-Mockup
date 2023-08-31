@@ -22,7 +22,7 @@ contract BNBRegistrarController is Ownable {
         address resolver,
         address addr
     ) public payable {
-        require(registrationFee == msg.value, "");
+        require(registrationFee == msg.value, "11");
 
         bytes32 label = keccak256(bytes(name));
         uint256 tokenId = uint256(label);

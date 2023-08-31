@@ -17,11 +17,9 @@ contract BaseRegistrarImplementation is ERC721, Ownable {
 
     constructor(
         BNSRegistry _bns,
-        address _controller,
         bytes32 _baseNode
     ) ERC721("Binance Name Service", "BNS") {
         bns = _bns;
-        controller = _controller;
         baseNode = _baseNode;
     }
 
@@ -33,6 +31,10 @@ contract BaseRegistrarImplementation is ERC721, Ownable {
     modifier onlyController() {
         require(controller == msg.sender, "");
         _;
+    }
+
+    function setController(address _controller) public onlyOwner {
+        controller = _controller;
     }
 
     function ownerOf(uint256 tokenId) public view override returns (address) {
