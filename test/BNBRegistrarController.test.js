@@ -4,7 +4,7 @@ const { ethers } = require("hardhat");
 
 // Test Suite
 describe("BNBRegistrarController", () => {
-    let BNBRegistrarController, bnbRegistrarController, BaseRegistrar, baseRegistrar, PublicResolver, publicResolver, BNSRegistry, bnsRegistry;
+    let BNS6551Factory, BNBRegistrarController, bnbRegistrarController, BaseRegistrar, factory, baseRegistrar, PublicResolver, publicResolver, BNSRegistry, bnsRegistry;
     let registrationFee, owner, addr1, addr2, baseNode;
 
     before(async () => {
@@ -17,8 +17,11 @@ describe("BNBRegistrarController", () => {
 
         baseNode = ethers.utils.namehash("bnb");
 
+        BNS6551Factory = await ethers.getContractFactory("BNS6551Factory");
+        factory = await BNS6551Factory.deploy();
+
         BaseRegistrar = await ethers.getContractFactory("BaseRegistrarImplementation");
-        baseRegistrar = await BaseRegistrar.deploy(bnsRegistry.address, baseNode);
+        baseRegistrar = await BaseRegistrar.deploy(bnsRegistry.address, factory.address, baseNode);
 
         await bnsRegistry.setSubnodeOwner(ethers.constants.HashZero, ethers.utils.keccak256(ethers.utils.toUtf8Bytes('bnb')), baseRegistrar.address);
 
@@ -48,6 +51,23 @@ describe("BNBRegistrarController", () => {
 
             expect(await baseRegistrar.ownerOf(tokenId)).to.equal(addr1.address);
             expect(await publicResolver.addr(nodehash)).to.equal(addr1.address);
+        });
+
+        it("Should create ERC6551Account", async function () {
+            // Expectations
+            const name = "example";
+            const label = ethers.utils.keccak256(ethers.utils.toUtf8Bytes(name));
+            const id = ethers.BigNumber.from(label);
+
+            const bns6551Addr = await baseRegistrar.bns6551s(id);
+            const bns6551 = await ethers.getContractAt("BNS6551Account", bns6551Addr);
+
+            const { chainId, tokenContract, tokenId } = await bns6551.token();
+
+            expect(await bns6551.owner()).to.equal(addr1.address);
+            expect((await ethers.provider.getNetwork()).chainId).to.equal(chainId);
+            expect(baseRegistrar.address).to.equal(tokenContract);
+            expect(id).to.equal(tokenId);
         });
     });
 
@@ -98,6 +118,23 @@ describe("BNBRegistrarController", () => {
             await publicResolver.connect(addr2).setAddress(nodehash, addr2.address);
 
             expect(await publicResolver.addr(nodehash)).to.equal(addr2.address);
+        });
+
+        it("Should transfer ERC6551Account", async function () {
+            // Expectations
+            const name = "example";
+            const label = ethers.utils.keccak256(ethers.utils.toUtf8Bytes(name));
+            const id = ethers.BigNumber.from(label);
+
+            const bns6551Addr = await baseRegistrar.bns6551s(id);
+            const bns6551 = await ethers.getContractAt("BNS6551Account", bns6551Addr);
+
+            const { chainId, tokenContract, tokenId } = await bns6551.token();
+
+            expect(await bns6551.owner()).to.equal(addr2.address);
+            expect((await ethers.provider.getNetwork()).chainId).to.equal(chainId);
+            expect(baseRegistrar.address).to.equal(tokenContract);
+            expect(id).to.equal(tokenId);
         });
     });
 });
