@@ -5,20 +5,29 @@ The BNS-Contracts-Mockup repository contains the contracts for simulating the Bi
 The BNBRegistrarController contract facilitates the registration and management of domain names. It allows users to register new names, place bids for a domain, transfer the ownership of a domain, and update the resolver associated with a domain.
 
 Methods:
-- register(string memory name, address owner, address resolver, address addr): Allows users to register a new domain name.
-- bid(uint256 tokenId): Allows users to place a bid for a domain name.
-- endAuction(uint256 tokenId): Ends the auction for a domain name and transfers the NFT to the highest bidder.
-- withdraw(): Allows the owner to withdraw the balance from the contract.
+- `register(string memory name, address owner, address resolver, address addr)`: Allows users to register a new domain name.
+- `bid(uint256 tokenId)`: Allows users to place a bid for a domain name.
+- `endAuction(uint256 tokenId)`: Ends the auction for a domain name and transfers the NFT to the highest bidder.
+- `withdraw()`: Allows the owner to withdraw the balance from the contract.
 setEndOfYear(uint256 timestamp): Allows the owner to set the endOfYear timestamp.
 
 ## BaseRegistrarImplementation Contract
 The BaseRegistrarImplementation contract is an ERC721 token that represents ownership of a domain. It allows the management of subdomains and the associated resolvers.
 
 Methods:
-- setController(address _controller): Allows the owner to set the controller address.
-- setResolver(address resolver): Allows the owner to set the resolver address.
-- register(uint256 id, address owner): Registers a new subdomain.
-- reclaim(uint256 id, address owner): Reclaims the ownership of a subdomain.
+- `setController(address _controller)`: Allows the owner to set the controller address.
+- `setResolver(address resolver)`: Allows the owner to set the resolver address.
+- `register(uint256 id, address owner)`: Registers a new subdomain.
+- `reclaim(uint256 id, address owner)`: Reclaims the ownership of a subdomain.
+
+## BNSRegistry Contract
+The BNSRegistry contract is a key component of the Binance Name Service (BNS) system, which manages the ownership and resolution of domain names. The contract includes functions for setting the owner, resolver, and subnode owner of a domain name.
+
+- `setRecord(bytes32 node, address _owner, address _resolver)`: Allows users to set the owner and resolver of a domain name.
+setOwner(bytes32 node, address _owner): Allows users to set the owner of a domain name.
+- `setSubnodeOwner(bytes32 node, bytes32 label, address _owner)`: Allows users to set the owner of a subdomain.
+setResolver(bytes32 node, address _resolver): Allows users to set the resolver of a domain name.
+- `setApprovalForAll(address operator, bool approved)`: Allows users to set the approval status of an operator.
 
 ##  Dependencies
 Please note that this repository does not have external dependencies. However, ensure that the Ethereum environment you're deploying to is compatible with the pragma solidity ^0.8.9 version.
