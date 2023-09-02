@@ -8,6 +8,7 @@ contract PublicResolver {
 
     mapping(bytes32 => address) public addresses;
     mapping(bytes32 => string) public names;
+    mapping(bytes32 => string) public caNames;
 
     constructor(address bnsAddr) {
         bns = BNSRegistry(bnsAddr);
@@ -20,6 +21,13 @@ contract PublicResolver {
         names[node] = _name;
     }
 
+    function setCaName(
+        bytes32 node,
+        string calldata _name
+    ) external authorised(node) {
+        caNames[node] = _name;
+    }
+
     function setAddress(
         bytes32 node,
         address _address
@@ -29,6 +37,10 @@ contract PublicResolver {
 
     function name(bytes32 node) external view returns (string memory) {
         return names[node];
+    }
+
+    function caName(bytes32 node) external view returns (string memory) {
+        return caNames[node];
     }
 
     function addr(bytes32 node) external view returns (address) {

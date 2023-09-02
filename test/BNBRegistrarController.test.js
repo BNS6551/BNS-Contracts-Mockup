@@ -48,11 +48,13 @@ describe("BNBRegistrarController", () => {
             const label = ethers.utils.keccak256(ethers.utils.toUtf8Bytes(name));
             const tokenId = ethers.BigNumber.from(label);
             const fullName = name + ".bnb";
+            const caFullName = "ca." + name + ".bnb";
             const nodehash = ethers.utils.namehash(fullName);
 
             expect(await baseRegistrar.ownerOf(tokenId)).to.equal(addr1.address);
             expect(await publicResolver.addr(nodehash)).to.equal(addr1.address);
             expect(await publicResolver.name(nodehash)).to.equal(fullName);
+            expect(await publicResolver.caName(nodehash)).to.equal(caFullName);
         });
 
         it("Should create ERC6551Account", async function () {
@@ -116,10 +118,13 @@ describe("BNBRegistrarController", () => {
 
         it("Should update the resolver to the new owner's address", async () => {
             const nodehash = ethers.utils.namehash("example.bnb");
+            const name = "example";
+            const caFullName = "ca." + name + ".bnb";
 
             await publicResolver.connect(addr2).setAddress(nodehash, addr2.address);
 
             expect(await publicResolver.addr(nodehash)).to.equal(addr2.address);
+            expect(await publicResolver.caName(nodehash)).to.equal(caFullName);
         });
 
         it("Should transfer ERC6551Account", async function () {
