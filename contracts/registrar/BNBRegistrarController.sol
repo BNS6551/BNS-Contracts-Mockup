@@ -11,6 +11,11 @@ contract BNBRegistrarController is Ownable {
 
     uint256 public registrationFee;
 
+    mapping(uint256 => uint256) public highestBid;
+    mapping(uint256 => address) public highestBidder;
+
+    uint256 public endOfYear;
+
     constructor(BaseRegistrar _base, uint256 _registrationFee) {
         base = _base;
         registrationFee = _registrationFee;
@@ -39,47 +44,32 @@ contract BNBRegistrarController is Ownable {
         base.transferFrom(address(this), owner, tokenId);
     }
 
-    function withdraw() public onlyOwner {
+    function withdraw() external onlyOwner {
         payable(msg.sender).transfer(address(this).balance);
     }
 
-    // uint256 public auctionEndBlock;
+    function bid(uint256 tokenId) public payable {
+        require(block.timestamp < endOfYear, "12");
+        require(msg.value > highestBid[tokenId], "13");
 
-    // struct Bid {
-    //     address bidder;
-    //     uint256 amount;
-    // }
+        if (highestBid[tokenId] > 0) {
+            payable(highestBidder[tokenId]).transfer(highestBid[tokenId]);
+        }
 
-    // function bid(bytes32 node) external payable {
-    //     require(block.number < auctionEndBlock, "Auction has ended");
-    //     bids[node].push(Bid({bidder: msg.sender, amount: msg.value}));
-    // }
+        highestBid[tokenId] = msg.value;
+        highestBidder[tokenId] = msg.sender;
+    }
 
-    // function endAuction(bytes32 node) external onlyOwner {
-    //     require(block.number >= auctionEndBlock, "Auction has not ended yet");
+    function endAuction(uint256 tokenId) public {
+        require(block.timestamp >= endOfYear, "14");
 
-    //     Bid[] memory nodeBids = bids[node];
-    //     require(nodeBids.length > 0, "No bids for this name");
+        base.transfer(tokenId, highestBidder[tokenId]);
 
-    //     // Find the highest bidder
-    //     Bid memory highestBid = nodeBids[0];
-    //     for (uint256 i = 1; i < nodeBids.length; i++) {
-    //         if (nodeBids[i].amount > highestBid.amount) {
-    //             highestBid = nodeBids[i];
-    //         }
-    //     }
+        highestBid[tokenId] = 0;
+        highestBidder[tokenId] = address(0);
+    }
 
-    //     // Transfer the BNS(NFT) to the highest bidder
-    //     transfer(node, highestBid.bidder);
-
-    //     // Refund all other bidders
-    //     for (uint256 i = 0; i < nodeBids.length; i++) {
-    //         if (nodeBids[i].bidder != highestBid.bidder) {
-    //             payable(nodeBids[i].bidder).transfer(nodeBids[i].amount);
-    //         }
-    //     }
-
-    //     // Reset bids for this node
-    //     delete bids[node];
-    // }
+    function setEndOfYear(uint256 timestamp) external onlyOwner {
+        endOfYear = timestamp;
+    }
 }

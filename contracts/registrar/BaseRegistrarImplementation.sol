@@ -57,4 +57,14 @@ contract BaseRegistrarImplementation is ERC721, Ownable {
         require(_isApprovedOrOwner(msg.sender, id));
         bns.setSubnodeOwner(baseNode, bytes32(id), owner);
     }
+
+    function transfer(
+        uint256 tokenId,
+        address newOwner
+    ) external live onlyController {
+        require(_exists(tokenId), "Token does not exist");
+        _burn(tokenId);
+        _mint(newOwner, tokenId);
+        bns.setSubnodeOwner(baseNode, bytes32(tokenId), newOwner);
+    }
 }

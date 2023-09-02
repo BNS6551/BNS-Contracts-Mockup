@@ -50,4 +50,54 @@ describe("BNBRegistrarController", () => {
             expect(await publicResolver.addr(nodehash)).to.equal(addr1.address);
         });
     });
+
+    describe("bid", () => {
+        it("Should allow bidding", async () => {
+            await bnbRegistrarController.setEndOfYear(Math.floor(Date.now() / 1000) + 60);
+
+            const tokenId = ethers.BigNumber.from(ethers.utils.keccak256(ethers.utils.toUtf8Bytes("example")));
+
+            const initialBalance = await ethers.provider.getBalance(bnbRegistrarController.address);
+            const preHighestBid = await bnbRegistrarController.highestBid(tokenId);
+            await bnbRegistrarController.connect(addr1).bid(tokenId, { value: ethers.utils.parseEther("0.2") });
+            const newBalance = await ethers.provider.getBalance(bnbRegistrarController.address);
+
+            expect(newBalance).to.equal(initialBalance.add(ethers.utils.parseEther("0.2")).sub(preHighestBid));
+            expect(await bnbRegistrarController.highestBid(tokenId)).to.equal(ethers.utils.parseEther("0.2"));
+            expect(await bnbRegistrarController.highestBidder(tokenId)).to.equal(addr1.address);
+        });
+
+        it("Should refund previous bidder and update highest bid and bidder", async () => {
+            const tokenId = ethers.BigNumber.from(ethers.utils.keccak256(ethers.utils.toUtf8Bytes("example")));
+
+            const initialBalance = await ethers.provider.getBalance(bnbRegistrarController.address);
+            const preHighestBid = await bnbRegistrarController.highestBid(tokenId);
+            await bnbRegistrarController.connect(addr2).bid(tokenId, { value: ethers.utils.parseEther("0.3") });
+            const newBalance = await ethers.provider.getBalance(bnbRegistrarController.address);
+
+            expect(newBalance).to.equal(initialBalance.add(ethers.utils.parseEther("0.3")).sub(preHighestBid));
+            expect(await bnbRegistrarController.highestBid(tokenId)).to.equal(ethers.utils.parseEther("0.3"));
+            expect(await bnbRegistrarController.highestBidder(tokenId)).to.equal(addr2.address);
+        });
+    });
+
+    describe("endAuction", () => {
+        it("Should transfer the NFT to the highest bidder at the end of the year", async () => {
+            const tokenId = ethers.BigNumber.from(ethers.utils.keccak256(ethers.utils.toUtf8Bytes("example")));
+
+            await bnbRegistrarController.setEndOfYear(Math.floor(Date.now() / 1000) - 1);
+
+            await bnbRegistrarController.endAuction(tokenId);
+
+            expect(await baseRegistrar.ownerOf(tokenId)).to.equal(addr2.address);
+        });
+
+        it("Should update the resolver to the new owner's address", async () => {
+            const nodehash = ethers.utils.namehash("example.bnb");
+
+            await publicResolver.connect(addr2).setAddress(nodehash, addr2.address);
+
+            expect(await publicResolver.addr(nodehash)).to.equal(addr2.address);
+        });
+    });
 });
