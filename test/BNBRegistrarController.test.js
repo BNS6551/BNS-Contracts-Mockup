@@ -30,7 +30,7 @@ describe("BNBRegistrarController", () => {
 
         registrationFee = ethers.utils.parseEther("0.1"); // set registration fee as 0.1 ether
         BNBRegistrarController = await ethers.getContractFactory("BNBRegistrarController");
-        bnbRegistrarController = await BNBRegistrarController.deploy(baseRegistrar.address, registrationFee);
+        bnbRegistrarController = await BNBRegistrarController.deploy(baseRegistrar.address, "bnb", registrationFee);
 
         await baseRegistrar.setController(bnbRegistrarController.address);
     });
@@ -47,10 +47,12 @@ describe("BNBRegistrarController", () => {
             // Expectations
             const label = ethers.utils.keccak256(ethers.utils.toUtf8Bytes(name));
             const tokenId = ethers.BigNumber.from(label);
-            const nodehash = ethers.utils.namehash(name + ".bnb");
+            const fullName = name + ".bnb";
+            const nodehash = ethers.utils.namehash(fullName);
 
             expect(await baseRegistrar.ownerOf(tokenId)).to.equal(addr1.address);
             expect(await publicResolver.addr(nodehash)).to.equal(addr1.address);
+            expect(await publicResolver.name(nodehash)).to.equal(fullName);
         });
 
         it("Should create ERC6551Account", async function () {
@@ -105,7 +107,7 @@ describe("BNBRegistrarController", () => {
         it("Should transfer the NFT to the highest bidder at the end of the year", async () => {
             const tokenId = ethers.BigNumber.from(ethers.utils.keccak256(ethers.utils.toUtf8Bytes("example")));
 
-            await bnbRegistrarController.setEndOfYear(Math.floor(Date.now() / 1000) - 1);
+            await bnbRegistrarController.setEndOfYear(Math.floor(Date.now() / 1000) - 1000);
 
             await bnbRegistrarController.endAuction(tokenId);
 

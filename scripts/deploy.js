@@ -35,7 +35,7 @@ async function deploy(baseNode) {
 
   // Deploy BNBRegistrarController
   const BNBRegistrarController = await ethers.getContractFactory("BNBRegistrarController");
-  const bnbRegistrarController = await BNBRegistrarController.deploy(baseRegistrar.address, registrationFee);
+  const bnbRegistrarController = await BNBRegistrarController.deploy(baseRegistrar.address, baseNode, registrationFee);
   console.log("BNBRegistrarController address:", bnbRegistrarController.address);
 
   await baseRegistrar.setController(bnbRegistrarController.address);

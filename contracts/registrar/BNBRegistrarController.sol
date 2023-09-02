@@ -5,9 +5,13 @@ import {BaseRegistrarImplementation as BaseRegistrar} from "./BaseRegistrarImple
 import {PublicResolver as Resolver} from "../resolver/PublicResolver.sol";
 
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
 
 contract BNBRegistrarController is Ownable {
+    using Strings for *;
+
     BaseRegistrar base;
+    string public baseName;
 
     uint256 public registrationFee;
 
@@ -16,8 +20,13 @@ contract BNBRegistrarController is Ownable {
 
     uint256 public endOfYear;
 
-    constructor(BaseRegistrar _base, uint256 _registrationFee) {
+    constructor(
+        BaseRegistrar _base,
+        string memory _baseName,
+        uint256 _registrationFee
+    ) {
         base = _base;
+        baseName = _baseName;
         registrationFee = _registrationFee;
     }
 
@@ -39,6 +48,9 @@ contract BNBRegistrarController is Ownable {
         base.bns().setResolver(nodehash, resolver);
 
         Resolver(resolver).setAddress(nodehash, addr);
+
+        string memory fullName = string(abi.encodePacked(name, ".", baseName));
+        Resolver(resolver).setName(nodehash, fullName);
 
         base.reclaim(tokenId, owner);
         base.transferFrom(address(this), owner, tokenId);
