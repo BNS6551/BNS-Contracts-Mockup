@@ -44,7 +44,7 @@ contract BNS6551Factory is BNS6551Registry {
 
         require(
             accountAddress != address(0),
-            "Failed to deploy BNS6551Account"
+            "Factory::_createBNS6551Account: Failed to deploy BNS6551Account"
         );
 
         emit BNS6551AccountCreated(msg.sender, accountAddress);

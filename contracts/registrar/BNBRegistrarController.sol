@@ -36,7 +36,10 @@ contract BNBRegistrarController is Ownable {
         address resolver,
         address addr
     ) public payable {
-        require(registrationFee == msg.value, "11");
+        require(
+            registrationFee == msg.value,
+            "Controller::register: Incorrect registration fee"
+        );
 
         bytes32 label = keccak256(bytes(name));
         uint256 tokenId = uint256(label);
@@ -50,7 +53,9 @@ contract BNBRegistrarController is Ownable {
         Resolver(resolver).setAddress(nodehash, addr);
 
         string memory fullName = string(abi.encodePacked(name, ".", baseName));
-        string memory caFullName = string(abi.encodePacked("ca.", name, ".", baseName));
+        string memory caFullName = string(
+            abi.encodePacked("ca.", name, ".", baseName)
+        );
         Resolver(resolver).setName(nodehash, fullName);
         Resolver(resolver).setCaName(nodehash, caFullName);
 
@@ -63,8 +68,14 @@ contract BNBRegistrarController is Ownable {
     }
 
     function bid(uint256 tokenId) public payable {
-        require(block.timestamp < endOfYear, "12");
-        require(msg.value > highestBid[tokenId], "13");
+        require(
+            block.timestamp < endOfYear,
+            "Controller::bid: Registration is closed for the year"
+        );
+        require(
+            msg.value > highestBid[tokenId],
+            "Controller::bid: Bid is lower than or equal to the current highest bid"
+        );
 
         if (highestBid[tokenId] > 0) {
             payable(highestBidder[tokenId]).transfer(highestBid[tokenId]);
@@ -75,7 +86,10 @@ contract BNBRegistrarController is Ownable {
     }
 
     function endAuction(uint256 tokenId) public {
-        require(block.timestamp >= endOfYear, "14");
+        require(
+            block.timestamp >= endOfYear,
+            "Controller::endAuction: Registration is not yet open for the year"
+        );
 
         base.transfer(tokenId, highestBidder[tokenId]);
 

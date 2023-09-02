@@ -30,12 +30,18 @@ contract BaseRegistrarImplementation is ERC721, Ownable {
     }
 
     modifier live() {
-        require(bns.owner(baseNode) == address(this));
+        require(
+            bns.owner(baseNode) == address(this),
+            "Base::live:Caller is not the owner of the baseNode"
+        );
         _;
     }
 
     modifier onlyController() {
-        require(controller == msg.sender, "");
+        require(
+            controller == msg.sender,
+            "Base::onlyController:Caller is not the controller"
+        );
         _;
     }
 
@@ -62,7 +68,10 @@ contract BaseRegistrarImplementation is ERC721, Ownable {
     }
 
     function reclaim(uint256 id, address owner) external live {
-        require(_isApprovedOrOwner(msg.sender, id));
+        require(
+            _isApprovedOrOwner(msg.sender, id),
+            "Base::reclaim:Caller is not approved or not the owner of the token"
+        );
         bns.setSubnodeOwner(baseNode, bytes32(id), owner);
     }
 
@@ -70,7 +79,10 @@ contract BaseRegistrarImplementation is ERC721, Ownable {
         uint256 tokenId,
         address newOwner
     ) external live onlyController {
-        require(_exists(tokenId), "Token does not exist");
+        require(
+            _exists(tokenId),
+            "Base::transfer: Token does not exist"
+        );
         _burn(tokenId);
         _mint(newOwner, tokenId);
         bns.setSubnodeOwner(baseNode, bytes32(tokenId), newOwner);

@@ -20,7 +20,10 @@ contract BNS6551Account is IERC165, IERC1271, IBNS6551Account {
         uint256 value,
         bytes calldata data
     ) external payable returns (bytes memory result) {
-        require(msg.sender == owner(), "Not token owner");
+        require(
+            msg.sender == owner(),
+            "BNS6551Account::executeCall: Not token owner"
+        );
 
         bool success;
         (success, result) = to.call{value: value}(data);
