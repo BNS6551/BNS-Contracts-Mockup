@@ -58,29 +58,3 @@ contract BaseRegistrarImplementation is ERC721, Ownable {
         bns.setSubnodeOwner(baseNode, bytes32(id), owner);
     }
 }
-
-// bytes4 private constant INTERFACE_META_ID =
-//     bytes4(keccak256("supportsInterface(bytes4)"));
-// bytes4 private constant ERC721_ID =
-//     bytes4(
-//         keccak256("balanceOf(address)") ^
-//             keccak256("ownerOf(uint256)") ^
-//             keccak256("approve(address,uint256)") ^
-//             keccak256("getApproved(uint256)") ^
-//             keccak256("setApprovalForAll(address,bool)") ^
-//             keccak256("isApprovedForAll(address,address)") ^
-//             keccak256("transferFrom(address,address,uint256)") ^
-//             keccak256("safeTransferFrom(address,address,uint256)") ^
-//             keccak256("safeTransferFrom(address,address,uint256,bytes)")
-//     );
-// bytes4 private constant RECLAIM_ID =
-//     bytes4(keccak256("reclaim(uint256,address)"));
-
-// function supportsInterface(
-//     bytes4 interfaceID
-// ) external view returns (bool) {
-//     return
-//         interfaceID == INTERFACE_META_ID ||
-//         interfaceID == ERC721_ID ||
-//         interfaceID == RECLAIM_ID;
-// }
