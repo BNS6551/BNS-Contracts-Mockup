@@ -33,8 +33,7 @@ contract BNBRegistrarController is Ownable {
     function register(
         string memory name,
         address owner,
-        address resolver,
-        address addr
+        address resolver
     ) public payable {
         require(
             registrationFee == msg.value,
@@ -50,7 +49,7 @@ contract BNBRegistrarController is Ownable {
 
         base.bns().setResolver(nodehash, resolver);
 
-        Resolver(resolver).setAddress(nodehash, addr);
+        Resolver(resolver).setAddress(nodehash, owner);
 
         string memory fullName = string(abi.encodePacked(name, ".", baseName));
         string memory caFullName = string(

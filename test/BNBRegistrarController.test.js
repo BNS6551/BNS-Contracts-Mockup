@@ -42,7 +42,7 @@ describe("BNBRegistrarController", () => {
             const resolver = publicResolver.address;
 
             // Function call
-            await bnbRegistrarController.connect(addr1).register(name, addr1.address, resolver, addr1.address, { value: registrationFee });
+            await bnbRegistrarController.connect(addr1).register(name, addr1.address, resolver, { value: registrationFee });
 
             // Expectations
             const label = ethers.utils.keccak256(ethers.utils.toUtf8Bytes(name));
