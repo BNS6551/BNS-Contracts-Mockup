@@ -79,7 +79,7 @@ Please note that this repository does not have external dependencies. However, e
 
 ### 1. Installation:
 
-Run npm install to install the necessary dependencies.
+Run `npm install` to install the necessary dependencies.
 Clone the repository to your local system.
 
 ```
@@ -88,7 +88,7 @@ npm install
 
 ### 2. Deployment:
 
-Run npx hardhat run scripts/deploy.js to compile the contracts using the Solidity compiler and deploy the `BNBRegistrarController` and `BaseRegistrarImplementation` contracts to your desired BNB network.
+Run `npx hardhat run scripts/deploy.js` to compile the contracts using the Solidity compiler and deploy the `BNBRegistrarController` and `BaseRegistrarImplementation` contracts to your desired BNB network.
 
 ```
 npx hardhat run scripts/bnb/1deploy.js
