@@ -88,7 +88,7 @@ npm install
 
 ### 2. Deployment:
 
-Run npx hardhat run scripts/deploy.js to compile the contracts using the Solidity compiler and deploy the BNBRegistrarController and BaseRegistrarImplementation contracts to your desired Ethereum network.
+Run npx hardhat run scripts/deploy.js to compile the contracts using the Solidity compiler and deploy the `BNBRegistrarController` and `BaseRegistrarImplementation` contracts to your desired BNB network.
 
 ```
 npx hardhat run scripts/bnb/1deploy.js
