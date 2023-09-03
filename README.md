@@ -16,7 +16,7 @@ The BNBRegistrarController contract facilitates the registration and management 
 
 Methods:
 
-- `register(string memory name, address owner, address resolver, address addr)`: Allows users to register a new domain name.
+- `register(string memory name, address owner, address resolver)`: Allows users to register a new domain name.
 - `bid(uint256 tokenId)`: Allows users to place a bid for a domain name.
 - `endAuction(uint256 tokenId)`: Ends the auction for a domain name and transfers the NFT to the highest bidder.
 - `withdraw()`: Allows the owner to withdraw the balance from the contract.
