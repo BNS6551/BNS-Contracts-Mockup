@@ -75,7 +75,22 @@ Methods:
 
 Please note that this repository does not have external dependencies. However, ensure that the Ethereum environment you're deploying to is compatible with the pragma solidity ^0.8.9 version.
 
-## Setup and Usage
+## Set Up Configuration:
+
+1. **Review the .example.env file.**
+2. **Create a .env file based on the example.** Adjust the values as
+
+For Linux or macOS:
+```
+cp .example.env .env
+```
+
+For Windows:
+```
+copy .example.env .env
+```
+
+## Quick Start Guide
 
 ### 1. Installation:
 
