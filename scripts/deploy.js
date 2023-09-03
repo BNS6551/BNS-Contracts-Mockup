@@ -37,7 +37,7 @@ async function deploy(BASE_NODE, GAS_INFO) {
   await publicResolver.deployed();
   console.log("PublicResolver address:", publicResolver.address);
 
-  const registrationFee = ethers.utils.parseEther("0.1");
+  const registrationFee = ethers.utils.parseEther("0.0001");
 
   // Deploy BNBRegistrarController
   const BNBRegistrarController = await ethers.getContractFactory("BNBRegistrarController", deployer);
