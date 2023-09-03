@@ -51,7 +51,7 @@ contract PublicResolver {
         require(
             bns.owner(node) == msg.sender ||
                 bns.isApprovedForAll(bns.owner(node), msg.sender),
-            "Not authorized"
+            "PublicResolver::authorised: Not authorized"
         );
         _;
     }
