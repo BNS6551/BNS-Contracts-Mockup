@@ -1,10 +1,16 @@
 const { ethers } = require("hardhat");
 const { deploy } = require("../deploy");
 
-const baseNode = ethers.utils.namehash("opbnb");
+const BASE_NODE = ethers.utils.namehash("opbnb");
+const GAS_INFO = {
+  // maxPriorityFeePerGas: ethers.utils.parseUnits('2', 'gwei'),
+  // maxFeePerGas: ethers.utils.parseUnits('2.000000009', 'gwei'),
+  gasPrice: ethers.utils.parseUnits('5', 'gwei'),
+  gasLimit: '3000000',
+};
 
 async function main() {
-  await deploy(baseNode);
+  await deploy(BASE_NODE, GAS_INFO);
 }
 
 main()
