@@ -8,19 +8,19 @@ module.exports = {
   solidity: {
     compilers: [{
       version: "0.8.9",
+      settings: {
+        optimizer: {
+          enabled: true,
+          runs: 200,
+        }
+      },
     }],
-    settings: {
-      optimizer: {
-        enabled: true,
-        runs: 200,
-      }
-    }
   },
   networks: {
     hardhat: {
       forking: {
-        // url: "https://bsc-testnet.publicnode.com",
-        url: "https://opbnb-testnet-rpc.bnbchain.org",
+        url: "https://bsc-testnet.publicnode.com",
+        // url: "https://opbnb-testnet-rpc.bnbchain.org",
       }
     },
     bnb: {
