@@ -74,10 +74,10 @@ contract BNBRegistrarController is Ownable {
     }
 
     function bid(uint256 tokenId) public payable {
-        require(
-            block.timestamp < endOfYear,
-            "Controller::bid: Registration is closed for the year"
-        );
+        // require(
+        //     block.timestamp < endOfYear,
+        //     "Controller::bid: Registration is closed for the year"
+        // );
         require(
             msg.value > highestBid[tokenId],
             "Controller::bid: Bid is lower than or equal to the current highest bid"
@@ -92,10 +92,10 @@ contract BNBRegistrarController is Ownable {
     }
 
     function endAuction(uint256 tokenId) public {
-        require(
-            block.timestamp >= endOfYear,
-            "Controller::endAuction: Registration is not yet open for the year"
-        );
+        // require(
+        //     block.timestamp >= endOfYear,
+        //     "Controller::endAuction: Registration is not yet open for the year"
+        // );
 
         base.transfer(tokenId, highestBidder[tokenId]);
         payable(highestBidder[tokenId]).transfer(
