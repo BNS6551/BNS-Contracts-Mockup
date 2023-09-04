@@ -17,7 +17,7 @@ contract BaseRegistrarImplementation is ERC721, Ownable {
 
     mapping(uint256 => address) public bns6551s;
 
-    // TODO expiries
+    bytes32[] private nodeHashes;
 
     constructor(
         BNSRegistry _bns,
@@ -61,6 +61,8 @@ contract BaseRegistrarImplementation is ERC721, Ownable {
         if (_exists(id)) _burn(id);
 
         _mint(owner, id);
+        bytes32 nodehash = _getNodeHashFromTokenId(id);
+        nodeHashes.push(nodehash);
 
         bns6551s[id] = factory.createBNS6551(address(this), id);
 
@@ -79,12 +81,20 @@ contract BaseRegistrarImplementation is ERC721, Ownable {
         uint256 tokenId,
         address newOwner
     ) external live onlyController {
-        require(
-            _exists(tokenId),
-            "Base::transfer: Token does not exist"
-        );
+        require(_exists(tokenId), "Base::transfer: Token does not exist");
         _burn(tokenId);
         _mint(newOwner, tokenId);
         bns.setSubnodeOwner(baseNode, bytes32(tokenId), newOwner);
+    }
+
+    function getNodeHashes() external view returns (bytes32[] memory) {
+        return nodeHashes;
+    }
+
+    function _getNodeHashFromTokenId(
+        uint256 tokenId
+    ) internal view returns (bytes32 nodehash) {
+        bytes32 label = bytes32(tokenId);
+        nodehash = keccak256(abi.encodePacked(baseNode, label));
     }
 }
