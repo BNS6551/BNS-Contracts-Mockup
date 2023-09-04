@@ -20,6 +20,9 @@ contract BNBRegistrarController is Ownable {
 
     uint256 public endOfYear;
 
+    uint256 public constant taxRate = 300000;
+    uint256 public constant MAX_PERCENTAGE = 1000000;
+
     constructor(
         BaseRegistrar _base,
         string memory _baseName,
@@ -95,6 +98,9 @@ contract BNBRegistrarController is Ownable {
         );
 
         base.transfer(tokenId, highestBidder[tokenId]);
+        payable(highestBidder[tokenId]).transfer(
+            (highestBid[tokenId] * (MAX_PERCENTAGE - taxRate)) / MAX_PERCENTAGE
+        );
 
         highestBid[tokenId] = 0;
         highestBidder[tokenId] = address(0);
