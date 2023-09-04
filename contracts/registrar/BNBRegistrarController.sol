@@ -7,8 +7,6 @@ import {PublicResolver as Resolver} from "../resolver/PublicResolver.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
-import "hardhat/console.sol";
-
 contract BNBRegistrarController is Ownable {
     using Strings for *;
 
@@ -48,7 +46,6 @@ contract BNBRegistrarController is Ownable {
         base.register(tokenId, address(this));
 
         bytes32 nodehash = keccak256(abi.encodePacked(base.baseNode(), label));
-        console.logBytes32(nodehash);
 
         base.bns().setResolver(nodehash, resolver);
 
