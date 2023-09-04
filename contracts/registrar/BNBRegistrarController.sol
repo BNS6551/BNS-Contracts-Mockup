@@ -55,8 +55,12 @@ contract BNBRegistrarController is Ownable {
         string memory caFullName = string(
             abi.encodePacked("ca.", name, ".", baseName)
         );
+        string memory eoaFullName = string(
+            abi.encodePacked("eoa.", name, ".", baseName)
+        );
         Resolver(resolver).setName(nodehash, fullName);
         Resolver(resolver).setCaName(nodehash, caFullName);
+        Resolver(resolver).setEoaName(nodehash, eoaFullName);
 
         base.reclaim(tokenId, owner);
         base.transferFrom(address(this), owner, tokenId);

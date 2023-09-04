@@ -9,9 +9,24 @@ contract PublicResolver {
     mapping(bytes32 => address) public addresses;
     mapping(bytes32 => string) public names;
     mapping(bytes32 => string) public caNames;
+    mapping(bytes32 => string) public eoaNames;
+
+    struct BNSInfo {
+        address owner;
+        string name;
+        string caName;
+        string eoaName;
+    }
 
     constructor(address bnsAddr) {
         bns = BNSRegistry(bnsAddr);
+    }
+
+    function setAddress(
+        bytes32 node,
+        address _address
+    ) external authorised(node) {
+        addresses[node] = _address;
     }
 
     function setName(
@@ -28,11 +43,15 @@ contract PublicResolver {
         caNames[node] = _name;
     }
 
-    function setAddress(
+    function setEoaName(
         bytes32 node,
-        address _address
+        string calldata _name
     ) external authorised(node) {
-        addresses[node] = _address;
+        eoaNames[node] = _name;
+    }
+
+    function addr(bytes32 node) external view returns (address) {
+        return addresses[node];
     }
 
     function name(bytes32 node) external view returns (string memory) {
@@ -43,8 +62,17 @@ contract PublicResolver {
         return caNames[node];
     }
 
-    function addr(bytes32 node) external view returns (address) {
-        return addresses[node];
+    function eoaName(bytes32 node) external view returns (string memory) {
+        return eoaNames[node];
+    }
+
+    function getBNSInfo(
+        bytes32 node
+    ) external view returns (BNSInfo memory bnsInfo) {
+        bnsInfo.owner = addresses[node];
+        bnsInfo.name = names[node];
+        bnsInfo.caName = caNames[node];
+        bnsInfo.eoaName = eoaNames[node];
     }
 
     modifier authorised(bytes32 node) {
