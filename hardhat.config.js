@@ -19,13 +19,8 @@ module.exports = {
   networks: {
     hardhat: {
       forking: {
-        url: "https://bsc-testnet.publicnode.com",
-        // url: "https://opbnb-testnet-rpc.bnbchain.org",
+        url: "https://opbnb-testnet-rpc.bnbchain.org",
       }
-    },
-    bnb: {
-      url: "https://bsc-testnet.publicnode.com",
-      accounts: [PRIVATE_KEY],
     },
     opbnb: {
       url: "https://opbnb-testnet-rpc.bnbchain.org",
