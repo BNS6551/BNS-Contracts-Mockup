@@ -15,7 +15,7 @@ describe("BNBRegistrarController", () => {
         BNSRegistry = await ethers.getContractFactory("BNSRegistry");
         bnsRegistry = await BNSRegistry.deploy();
 
-        baseNode = ethers.utils.namehash("bnb");
+        baseNode = ethers.utils.namehash("opbnb");
 
         BNS6551Factory = await ethers.getContractFactory("BNS6551Factory");
         factory = await BNS6551Factory.deploy();
@@ -23,14 +23,14 @@ describe("BNBRegistrarController", () => {
         BaseRegistrar = await ethers.getContractFactory("BaseRegistrarImplementation");
         baseRegistrar = await BaseRegistrar.deploy(bnsRegistry.address, factory.address, baseNode);
 
-        await bnsRegistry.setSubnodeOwner(ethers.constants.HashZero, ethers.utils.keccak256(ethers.utils.toUtf8Bytes('bnb')), baseRegistrar.address);
+        await bnsRegistry.setSubnodeOwner(ethers.constants.HashZero, ethers.utils.keccak256(ethers.utils.toUtf8Bytes('opbnb')), baseRegistrar.address);
 
         PublicResolver = await ethers.getContractFactory("PublicResolver");
         publicResolver = await PublicResolver.deploy(bnsRegistry.address);
 
         registrationFee = ethers.utils.parseEther("0.1"); // set registration fee as 0.1 ether
         BNBRegistrarController = await ethers.getContractFactory("BNBRegistrarController");
-        bnbRegistrarController = await BNBRegistrarController.deploy(baseRegistrar.address, "bnb", registrationFee);
+        bnbRegistrarController = await BNBRegistrarController.deploy(baseRegistrar.address, "opbnb", registrationFee);
 
         await baseRegistrar.setController(bnbRegistrarController.address);
     });
@@ -47,8 +47,8 @@ describe("BNBRegistrarController", () => {
             // Expectations
             const label = ethers.utils.keccak256(ethers.utils.toUtf8Bytes(name));
             const tokenId = ethers.BigNumber.from(label);
-            const fullName = name + ".bnb";
-            const caFullName = "ca." + name + ".bnb";
+            const fullName = name + ".opbnb";
+            const caFullName = "ca." + name + ".opbnb";
             const nodehash = ethers.utils.namehash(fullName);
 
             expect(await baseRegistrar.ownerOf(tokenId)).to.equal(addr1.address);
@@ -62,7 +62,7 @@ describe("BNBRegistrarController", () => {
             const name = "example";
             const label = ethers.utils.keccak256(ethers.utils.toUtf8Bytes(name));
             const id = ethers.BigNumber.from(label);
-            const fullName = name + ".bnb";
+            const fullName = name + ".opbnb";
             const nodehash = ethers.utils.namehash(fullName);
 
             const bns6551Addr = await baseRegistrar.bns6551s(nodehash);
@@ -119,9 +119,9 @@ describe("BNBRegistrarController", () => {
         });
 
         it("Should update the resolver to the new owner's address", async () => {
-            const nodehash = ethers.utils.namehash("example.bnb");
+            const nodehash = ethers.utils.namehash("example.opbnb");
             const name = "example";
-            const caFullName = "ca." + name + ".bnb";
+            const caFullName = "ca." + name + ".opbnb";
 
             await publicResolver.connect(addr2).setAddress(nodehash, addr2.address);
 
@@ -134,7 +134,7 @@ describe("BNBRegistrarController", () => {
             const name = "example";
             const label = ethers.utils.keccak256(ethers.utils.toUtf8Bytes(name));
             const id = ethers.BigNumber.from(label);
-            const fullName = name + ".bnb";
+            const fullName = name + ".opbnb";
             const nodehash = ethers.utils.namehash(fullName);
 
             const bns6551Addr = await baseRegistrar.bns6551s(nodehash);
