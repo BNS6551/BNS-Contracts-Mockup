@@ -37,4 +37,4 @@ main()
     process.exit(1);
   });
 
-// setEndOfYear hash: 0xc0bdf96d582a02e66399488659c3a7a69a86400d5f3959cd1bec68a590d64b4e
+// setEndOfYear hash: 0x554bb3c97d08b33f79c0915e1e8a6c708bc0700ea368d8b47136c0cda11139b1

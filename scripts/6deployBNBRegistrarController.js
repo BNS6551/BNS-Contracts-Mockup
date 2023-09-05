@@ -37,4 +37,4 @@ main()
     process.exit(1);
   });
 
-// BNBRegistrarController deployed to: 0xF55e7fcA5fdBcf0030e6D1760761ae791b22E0Bf
+// BNBRegistrarController deployed to: 0x5046c7a2865159d6F38ed208c3Bad4e760944562

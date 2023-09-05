@@ -27,4 +27,4 @@ main()
     process.exit(1);
   });
 
-// BNSRegistry deployed to: 0xF647E71bb4704De8E413166ebcA875c4ea0f2480
+// BNSRegistry deployed to: 0xfAD9508A1158286f1EBE19b1D803c774A0Af20B4

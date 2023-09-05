@@ -37,4 +37,4 @@ main()
     process.exit(1);
   });
 
-// setController hash: 0xcb6fc9fa30a503d1731a2a16ec4b4ae996b12c0fb51e8d7656cad41e35a5cd16
+// setController hash: 0x94afe526657585467291cba1c79056eed11b45eb0bf29401ec463fdf3747776e

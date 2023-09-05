@@ -12,8 +12,8 @@ async function main() {
   const data = controller.interface.encodeFunctionData(
     "register",
     [
-      "elvkdlee",
-      "0x9a80ba749a649b2604d796e01d8a64cc7b58ff71",
+      "MG12",
+      deployer.address,
       addrs.PublicResolver,
     ]
   );
@@ -40,4 +40,4 @@ main()
     process.exit(1);
   });
 
-// register hash: 0x2d5ca3bf85bec88b65636c909a2140a6bcfc1d833ed0d769f17eb3f3be57dee7
+// register hash: 0x1b279baf863c97d39d2a217314e8d61403d5617297df8c5f3260247c654ed828

@@ -27,4 +27,4 @@ main()
     process.exit(1);
   });
 
-// BNS6551Factory deployed to: 0xD693d08BE428127d2Ef6496c01cc606E44B28fe3
+// BNS6551Factory deployed to: 0x532EcbC0cC2ED1Cc749d504039F054155222CbD8

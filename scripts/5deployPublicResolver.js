@@ -35,4 +35,4 @@ main()
     process.exit(1);
   });
 
-// PublicResolver deployed to: 0x10a0ae7cC98e5C2dDe40FbDfE3Fba1495aBa9DFE
+// PublicResolver deployed to: 0xc522Ba77ca9f35f2b75B9d1aA383E5BF12069982

@@ -37,4 +37,4 @@ main()
     process.exit(1);
   });
 
-// BaseRegistrar deployed to: 0xd046985689ea4010a959f09fA4c14255B9C566F1
+// BaseRegistrar deployed to: 0x13E3d53F499dd2d5200267699a437FC683dd8993
