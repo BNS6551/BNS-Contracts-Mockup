@@ -7,12 +7,14 @@ contract PublicResolver {
     BNSRegistry public bns;
 
     mapping(bytes32 => address) public addresses;
+    mapping(bytes32 => address) public contactAddresses;
     mapping(bytes32 => string) public names;
     mapping(bytes32 => string) public caNames;
     mapping(bytes32 => string) public eoaNames;
 
     struct BNSInfo {
         address owner;
+        address ca;
         string name;
         string caName;
         string eoaName;
@@ -27,6 +29,13 @@ contract PublicResolver {
         address _address
     ) external authorised(node) {
         addresses[node] = _address;
+    }
+
+    function setContractAddress(
+        bytes32 node,
+        address _contractAddress
+    ) external authorised(node) {
+        contactAddresses[node] = _contractAddress;
     }
 
     function setName(
@@ -54,6 +63,10 @@ contract PublicResolver {
         return addresses[node];
     }
 
+    function contractAddr(bytes32 node) external view returns (address) {
+        return contactAddresses[node];
+    }
+
     function name(bytes32 node) external view returns (string memory) {
         return names[node];
     }
@@ -70,6 +83,7 @@ contract PublicResolver {
         bytes32 node
     ) external view returns (BNSInfo memory bnsInfo) {
         bnsInfo.owner = addresses[node];
+        bnsInfo.ca = contactAddresses[node];
         bnsInfo.name = names[node];
         bnsInfo.caName = caNames[node];
         bnsInfo.eoaName = eoaNames[node];

@@ -54,6 +54,9 @@ contract BNBRegistrarController is Ownable {
 
         Resolver(resolver).setAddress(nodehash, owner);
 
+        address ca = base.bns6551s(nodehash);
+        Resolver(resolver).setContractAddress(nodehash, ca);
+
         string memory fullName = string(abi.encodePacked(name, ".", baseName));
         string memory caFullName = string(
             abi.encodePacked("ca.", name, ".", baseName)
