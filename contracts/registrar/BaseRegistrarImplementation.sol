@@ -15,7 +15,7 @@ contract BaseRegistrarImplementation is ERC721, Ownable {
 
     address public controller;
 
-    mapping(uint256 => address) public bns6551s;
+    mapping(bytes32 => address) public bns6551s;
 
     bytes32[] private nodeHashes;
 
@@ -64,7 +64,7 @@ contract BaseRegistrarImplementation is ERC721, Ownable {
         bytes32 nodehash = _getNodeHashFromTokenId(id);
         nodeHashes.push(nodehash);
 
-        bns6551s[id] = factory.createBNS6551(address(this), id);
+        bns6551s[nodehash] = factory.createBNS6551(address(this), id);
 
         bns.setSubnodeOwner(baseNode, bytes32(id), owner);
     }

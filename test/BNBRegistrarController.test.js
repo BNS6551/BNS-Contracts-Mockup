@@ -62,8 +62,10 @@ describe("BNBRegistrarController", () => {
             const name = "example";
             const label = ethers.utils.keccak256(ethers.utils.toUtf8Bytes(name));
             const id = ethers.BigNumber.from(label);
+            const fullName = name + ".bnb";
+            const nodehash = ethers.utils.namehash(fullName);
 
-            const bns6551Addr = await baseRegistrar.bns6551s(id);
+            const bns6551Addr = await baseRegistrar.bns6551s(nodehash);
             const bns6551 = await ethers.getContractAt("BNS6551Account", bns6551Addr);
 
             const { chainId, tokenContract, tokenId } = await bns6551.token();
@@ -132,8 +134,10 @@ describe("BNBRegistrarController", () => {
             const name = "example";
             const label = ethers.utils.keccak256(ethers.utils.toUtf8Bytes(name));
             const id = ethers.BigNumber.from(label);
+            const fullName = name + ".bnb";
+            const nodehash = ethers.utils.namehash(fullName);
 
-            const bns6551Addr = await baseRegistrar.bns6551s(id);
+            const bns6551Addr = await baseRegistrar.bns6551s(nodehash);
             const bns6551 = await ethers.getContractAt("BNS6551Account", bns6551Addr);
 
             const { chainId, tokenContract, tokenId } = await bns6551.token();
